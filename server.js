@@ -13,23 +13,32 @@ app.use(express.json());
 // Rota raiz direciona para a pasta front
 app.use("/", express.static("./front"));
 
-app.get("/bandas", function (req, res) {
-  let bandasRef = ref(database, "/bandas");
-  get(bandasRef).then((snap) => {
-    let listaBandas = snap.val();
-    return res.status(200).json(listaBandas);
+app.get("/login", function (req, res) {
+  let loginRef = ref(database, "/login");
+  get(loginRef).then((snap) => {
+    let listalogin = snap.val();
+    return res.status(200).json(listalogin);
   });
 });
 
-app.post("/bandas", function (req, res) {
+app.post("/login", function (req, res) {
   console.log("recebi requisição POST com body:", req.body);
   //pega os dados enviados na requisição
   let dados = req.body;
   let id = dados.id;
   // Pega uma referência para o caminho /bandas/<ID>
-  let novaBandaRef = ref(database, "/bandas/" + id);
+  let novaloginRef = ref(database, "/login/" + id);
   // Adiciona dados no firebase no caminho /bandas/<ID>
-  set(novaBandaRef, dados).then(() => {
+  set(novaloginRef, dados).then(() => {
+    return res.status(200).json(dados);
+  });
+});
+app.post("/cliente", function (req, res) {
+
+  let dados = req.body;
+  let id = dados.id;
+  let novaclienteRef = ref(database, "/cliente/" + id);
+  set(novaclienteRef, dados).then(() => {
     return res.status(200).json(dados);
   });
 });
